@@ -24,10 +24,10 @@ public class Cliente implements Serializable {
 	
 	private String nome;
 	
-	@JsonIgnore
-	@ManyToMany
-	@JoinTable(name = "CLIENTE_PRODUTO", joinColumns = @JoinColumn(name = "cliente_id"), inverseJoinColumns = @JoinColumn(name = "produto_id"))
-	private List<Produto> produtos = new ArrayList<>();
+//	@JsonIgnore
+//	@ManyToMany
+//	@JoinTable(name = "CLIENTE_PRODUTO", joinColumns = @JoinColumn(name = "cliente_id"), inverseJoinColumns = @JoinColumn(name = "produto_id"))
+//	private List<Produto> produtos = new ArrayList<>();
 	
 	public Cliente() {}	
 	
@@ -53,13 +53,13 @@ public class Cliente implements Serializable {
 		this.nome = nome;
 	}
 
-	public List<Produto> getProdutos() {
-		return produtos;
-	}
-
-	public void setProdutos(List<Produto> produtos) {
-		this.produtos = produtos;
-	}
+//	public List<Produto> getProdutos() {
+//		return produtos;
+//	}
+//
+//	public void setProdutos(List<Produto> produtos) {
+//		this.produtos = produtos;
+//	}
 
 	@Override
 	public int hashCode() {

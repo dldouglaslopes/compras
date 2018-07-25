@@ -30,8 +30,8 @@ public class Produto implements Serializable {
 	@JoinColumn(name = "categoria_id")
 	private Categoria categoria;
 
-	@ManyToMany(mappedBy = "produtos", cascade = CascadeType.ALL)
-	private List<Cliente> clientes = new ArrayList<>();
+//	@ManyToMany(mappedBy = "produtos", cascade = CascadeType.ALL)
+//	private List<Cliente> clientes = new ArrayList<>();
 	
 	public Produto() {}
 
@@ -75,13 +75,13 @@ public class Produto implements Serializable {
 		this.categoria = categoria;
 	}	
 	
-	public List<Cliente> getClientes() {
-		return clientes;
-	}
-
-	public void setClientes(List<Cliente> clientes) {
-		this.clientes = clientes;
-	}
+//	public List<Cliente> getClientes() {
+//		return clientes;
+//	}
+//
+//	public void setClientes(List<Cliente> clientes) {
+//		this.clientes = clientes;
+//	}
 
 	@Override
 	public int hashCode() {

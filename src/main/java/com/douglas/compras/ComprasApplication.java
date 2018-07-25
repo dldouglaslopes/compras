@@ -34,18 +34,18 @@ public class ComprasApplication implements CommandLineRunner{
 		Cliente cliente2 = new Cliente(null, "João");
 		
 		Categoria categoria1 = new Categoria(null, "Frutas");
-		Categoria categoria2 = new Categoria(null, "Informática");		
+		Categoria categoria2 = new Categoria(null, "Informática");	
 		
 		categoriaRepositorio.saveAll(Arrays.asList(categoria1, categoria2));
 		
 		Produto produto1 = new Produto(null, "Maça", 10.00, categoria1);
-		Produto produto2 = new Produto(null, "Computador", 10.00, categoria2);
+		Produto produto2 = new Produto(null, "Computador", 10.00, categoria2);		
 		
 		produtoRepositorio.saveAll(Arrays.asList(produto1, produto2));
 	
-		cliente1.getProdutos().add(produto1);
-		cliente2.getProdutos().add(produto2);
+//		cliente1.getProdutos().add(produto1);
+//		cliente2.getProdutos().add(produto2);	
 		
-		clienteRepositorio.saveAll(Arrays.asList(cliente1, cliente2));
+		clienteRepositorio.saveAll(Arrays.asList(cliente1, cliente2));		
 	}
 }
