@@ -30,8 +30,7 @@ public class ComprasApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		Cliente cliente1 = new Cliente(null, "Maria");
-		Cliente cliente2 = new Cliente(null, "João");
+		
 		
 		Categoria categoria1 = new Categoria(null, "Frutas");
 		Categoria categoria2 = new Categoria(null, "Informática");	
@@ -39,13 +38,24 @@ public class ComprasApplication implements CommandLineRunner{
 		categoriaRepositorio.saveAll(Arrays.asList(categoria1, categoria2));
 		
 		Produto produto1 = new Produto(null, "Maça", 10.00, categoria1);
-		Produto produto2 = new Produto(null, "Computador", 10.00, categoria2);		
+		Produto produto2 = new Produto(null, "Computador", 10.00, categoria2);	
+		Produto produto3 = new Produto(null, "Teclado", 10.00, categoria2);
 		
-		produtoRepositorio.saveAll(Arrays.asList(produto1, produto2));
-	
-//		cliente1.getProdutos().add(produto1);
-//		cliente2.getProdutos().add(produto2);	
+		produtoRepositorio.saveAll(Arrays.asList(produto1, produto2, produto3));
 		
-		clienteRepositorio.saveAll(Arrays.asList(cliente1, cliente2));		
+//		categoria1.getProdutos().add(produto1);
+//		categoria2.getProdutos().add(produto2);				
+		
+		Cliente cliente1 = new Cliente(null, "Maria", "maria@email.com");
+		Cliente cliente2 = new Cliente(null, "João", "joao@email.com");
+		
+		cliente1.getProdutos().add(produto1);
+		cliente2.getProdutos().add(produto2);
+		
+		clienteRepositorio.saveAll(Arrays.asList(cliente1, cliente2));
+
+//		produto1.getClientes().add(cliente1);
+//		produto2.getClientes().add(cliente2);	
+		
 	}
 }

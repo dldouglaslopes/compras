@@ -3,6 +3,8 @@ package com.douglas.compras.service;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,4 +43,12 @@ public class ClienteService {
 		
 		return clienteRepositorio.save(novoCliente);
 	}	
+	
+	@Transactional
+	public Cliente insert(Cliente cliente) {
+		cliente.setId(null);
+		cliente = clienteRepositorio.save(cliente);		
+		
+		return cliente;
+	}
 }

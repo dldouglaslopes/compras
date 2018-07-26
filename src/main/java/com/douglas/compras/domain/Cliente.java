@@ -12,8 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 public class Cliente implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -23,18 +21,19 @@ public class Cliente implements Serializable {
 	private Integer id;
 	
 	private String nome;
+	private String email;
 	
-//	@JsonIgnore
-//	@ManyToMany
-//	@JoinTable(name = "CLIENTE_PRODUTO", joinColumns = @JoinColumn(name = "cliente_id"), inverseJoinColumns = @JoinColumn(name = "produto_id"))
-//	private List<Produto> produtos = new ArrayList<>();
+	@ManyToMany
+	@JoinTable(name = "CLIENTE_PRODUTO", joinColumns = @JoinColumn(name = "cliente_id"), inverseJoinColumns = @JoinColumn(name = "produto_id"))
+	private List<Produto> produtos = new ArrayList<>();
 	
 	public Cliente() {}	
 	
-	public Cliente(Integer id, String nome) {
+	public Cliente(Integer id, String nome, String email) {
 		super();
 		this.id = id;
 		this.nome = nome;
+		this.email = email;
 	}
 
 	public Integer getId() {
@@ -53,13 +52,21 @@ public class Cliente implements Serializable {
 		this.nome = nome;
 	}
 
-//	public List<Produto> getProdutos() {
-//		return produtos;
-//	}
-//
-//	public void setProdutos(List<Produto> produtos) {
-//		this.produtos = produtos;
-//	}
+	public List<Produto> getProdutos() {
+		return produtos;
+	}
+
+	public void setProdutos(List<Produto> produtos) {
+		this.produtos = produtos;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
 	@Override
 	public int hashCode() {

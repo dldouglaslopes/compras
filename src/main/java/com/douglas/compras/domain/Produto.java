@@ -1,7 +1,6 @@
 package com.douglas.compras.domain;
 
 import java.io.Serializable;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,11 +8,12 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Produto implements Serializable {
@@ -24,14 +24,15 @@ public class Produto implements Serializable {
 	private Integer id;
 	
 	private String nome;
-	private Double preco;
+	private Double preco;	
 	
 	@ManyToOne
 	@JoinColumn(name = "categoria_id")
 	private Categoria categoria;
 
-//	@ManyToMany(mappedBy = "produtos", cascade = CascadeType.ALL)
-//	private List<Cliente> clientes = new ArrayList<>();
+	@JsonIgnore
+	@ManyToMany(mappedBy = "produtos", cascade = CascadeType.ALL)
+	private List<Cliente> clientes = new ArrayList<>();
 	
 	public Produto() {}
 
@@ -65,23 +66,23 @@ public class Produto implements Serializable {
 
 	public void setPreco(Double preco) {
 		this.preco = preco;
-	}
-
-	public Categoria getCategoria() {
-		return categoria;
+	}	
+	
+	public String getCategoria() {
+		return categoria.getNome();
 	}
 
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 	}	
 	
-//	public List<Cliente> getClientes() {
-//		return clientes;
-//	}
-//
-//	public void setClientes(List<Cliente> clientes) {
-//		this.clientes = clientes;
-//	}
+	public List<Cliente> getClientes() {
+		return clientes;
+	}
+
+	public void setClientes(List<Cliente> clientes) {
+		this.clientes = clientes;
+	}
 
 	@Override
 	public int hashCode() {
