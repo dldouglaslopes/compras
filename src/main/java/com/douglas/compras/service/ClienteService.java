@@ -39,7 +39,7 @@ public class ClienteService {
 		Cliente novoCliente = find(cliente.getId());
 		
 		novoCliente.setNome(cliente.getNome());
-		//novoCliente.setProdutos(cliente.getProdutos());
+		novoCliente.setEmail(cliente.getEmail());
 		
 		return clienteRepositorio.save(novoCliente);
 	}	

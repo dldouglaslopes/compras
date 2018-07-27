@@ -10,7 +10,14 @@ public class ClienteDTO implements Serializable{
 	private String email;
 	
 	public ClienteDTO() {}		
-	
+		
+//	public ClienteDTO(Integer id, String nome, String email) {
+//		super();
+//		this.id = id;
+//		this.nome = nome;
+//		this.email = email;
+//	}
+
 	public Integer getId() {
 		return id;
 	}

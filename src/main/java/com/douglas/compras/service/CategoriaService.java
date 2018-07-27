@@ -3,6 +3,9 @@ package com.douglas.compras.service;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,11 +37,18 @@ public class CategoriaService {
 	}
 
 	public Categoria update(Categoria categoria) {		
-		Categoria novoCategoria = find(categoria.getId());
+		Categoria novaCategoria = find(categoria.getId());
 		
-		novoCategoria.setNome(categoria.getNome());
-//		novoCategoria.setProdutos(categoria.getProdutos());
+		novaCategoria.setNome(categoria.getNome());
 		
-		return categoriaRepositorio.save(novoCategoria);
+		return categoriaRepositorio.save(novaCategoria);
+	}
+
+	@Transactional
+	public Categoria insert(@Valid Categoria categoria) {
+		categoria.setId(null);
+		categoria = categoriaRepositorio.save(categoria);		
+		
+		return categoria;
 	} 
 }

@@ -45,17 +45,24 @@ public class ClienteResource {
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Cliente> update(@Valid @RequestBody Cliente cliente) {
-		Cliente novoCliente = new Cliente();
-		novoCliente.setId(cliente.getId());
-		novoCliente = clienteService.update(cliente);
+	public ResponseEntity<Cliente> update(@PathVariable Integer id, 
+											@Valid @RequestBody ClienteDTO clienteDTO) {
+		
+		Cliente cliente = new Cliente(clienteDTO.getId(), 
+										clienteDTO.getNome(), 
+										clienteDTO.getEmail());
+		cliente.setId(id);
+		cliente = clienteService.update(cliente);
 		
 		return ResponseEntity.noContent().build();
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteDTO clienteDTO) {		
-		Cliente cliente = new Cliente(null, clienteDTO.getNome(), clienteDTO.getEmail());
+		Cliente cliente = new Cliente(null, 
+										clienteDTO.getNome(), 
+										clienteDTO.getEmail());
+		
 		cliente = clienteService.insert(cliente);
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -63,36 +70,4 @@ public class ClienteResource {
 		
 		return ResponseEntity.created(uri).build();
 	}
-	
-//	public ResponseEntity<Void> insert(@Valid @RequestBody ClientNewDTO clientNewDTO) {
-//		Client client = service.fromDTO(clientNewDTO);
-//		client = service.insert(client);
-//		
-//		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-//					.path("/{id}").buildAndExpand(client.getId()).toUri();
-//		
-//		return ResponseEntity.created(uri).build();
-//}
-	
-//	public Client fromDTO(ClientDTO clientDTO) {
-//		return new Client(clientDTO.getId(), clientDTO.getName(), clientDTO.getEmail(), null, null, null);
-//	}
-//	
-//	public Client fromDTO(ClientNewDTO clientNewDTO) {
-//		Client client = new Client(null, clientNewDTO.getName(), clientNewDTO.getEmail(), clientNewDTO.getCpfOrCnpj(), TypeClient.toEnum(clientNewDTO.getType()), encoder.encode(clientNewDTO.getPassword()));
-//		City city = new City(clientNewDTO.getCityId(), null, null);
-//		Address address = new Address(null, clientNewDTO.getPatio(), clientNewDTO.getNumber(), clientNewDTO.getAdditional(), clientNewDTO.getDistrict(), clientNewDTO.getZipCode(), client, city);
-//		client.getAddresses().add(address);
-//		client.getPhones().add(clientNewDTO.getPhone1());
-//		
-//		if (clientNewDTO.getPhone2() != null) {
-//			client.getPhones().add(clientNewDTO.getPhone2());
-//		}
-//		
-//		if (clientNewDTO.getPhone3() != null) {
-//			client.getPhones().add(clientNewDTO.getPhone3());
-//		}
-//		
-//		return client;
-//}
 }

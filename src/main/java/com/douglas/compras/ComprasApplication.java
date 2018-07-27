@@ -29,9 +29,7 @@ public class ComprasApplication implements CommandLineRunner{
 	}
 
 	@Override
-	public void run(String... args) throws Exception {
-		
-		
+	public void run(String... args) throws Exception {		
 		Categoria categoria1 = new Categoria(null, "Frutas");
 		Categoria categoria2 = new Categoria(null, "Informática");	
 		
@@ -43,9 +41,6 @@ public class ComprasApplication implements CommandLineRunner{
 		
 		produtoRepositorio.saveAll(Arrays.asList(produto1, produto2, produto3));
 		
-//		categoria1.getProdutos().add(produto1);
-//		categoria2.getProdutos().add(produto2);				
-		
 		Cliente cliente1 = new Cliente(null, "Maria", "maria@email.com");
 		Cliente cliente2 = new Cliente(null, "João", "joao@email.com");
 		
@@ -53,9 +48,5 @@ public class ComprasApplication implements CommandLineRunner{
 		cliente2.getProdutos().add(produto2);
 		
 		clienteRepositorio.saveAll(Arrays.asList(cliente1, cliente2));
-
-//		produto1.getClientes().add(cliente1);
-//		produto2.getClientes().add(cliente2);	
-		
 	}
 }

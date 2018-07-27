@@ -68,8 +68,8 @@ public class Produto implements Serializable {
 		this.preco = preco;
 	}	
 	
-	public String getCategoria() {
-		return categoria.getNome();
+	public Categoria getCategoria() {
+		return categoria;
 	}
 
 	public void setCategoria(Categoria categoria) {

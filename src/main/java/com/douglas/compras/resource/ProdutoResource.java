@@ -1,5 +1,6 @@
 package com.douglas.compras.resource;
 
+import java.net.URI;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.douglas.compras.domain.Produto;
 import com.douglas.compras.service.ProdutoService;
@@ -42,11 +44,32 @@ public class ProdutoResource {
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Produto> update(@Valid @RequestBody Produto produto) {
-		Produto novoProduto = new Produto();
-		novoProduto.setId(produto.getId());
-		novoProduto = produtoService.update(produto);
+	public ResponseEntity<Produto> update(@PathVariable Integer id, 
+										@Valid @RequestBody Produto novoProduto) {
+		
+		Produto produto = new Produto(novoProduto.getId(), 
+									novoProduto.getNome(), 
+									novoProduto.getPreco(), 
+									novoProduto.getCategoria());
+		
+		produto.setId(id);
+		produto = produtoService.update(produto);
 		
 		return ResponseEntity.noContent().build();
+	}
+	
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<Void> insert(@Valid @RequestBody Produto novoProduto) {
+		Produto produto = new Produto(null, 
+										novoProduto.getNome(), 
+										novoProduto.getPreco(), 
+										novoProduto.getCategoria());
+		
+		produto = produtoService.insert(produto);
+		
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+		.path("/{id}").buildAndExpand(produto.getId()).toUri();
+		
+		return ResponseEntity.created(uri).build();
 	}
 }

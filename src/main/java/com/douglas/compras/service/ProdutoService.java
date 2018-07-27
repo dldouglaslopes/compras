@@ -36,10 +36,16 @@ public class ProdutoService {
 		Produto novoProduto = find(produto.getId());
 		
 		novoProduto.setNome(produto.getNome());
-//		novoProduto.setCategoria(produto.getCategoria());
+		novoProduto.setCategoria(produto.getCategoria());
 		novoProduto.setPreco(produto.getPreco());
-//		novoProduto.setClientes(produto.getClientes());
 		
 		return produtoRepositorio.save(novoProduto);
+	}
+
+	public Produto insert(Produto produto) {
+		produto.setId(null);
+		produto = produtoRepositorio.save(produto);		
+		
+		return produto;
 	}	
 }
