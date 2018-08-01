@@ -26,7 +26,7 @@ public class CategoriaResource {
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public List<Categoria> list() {		
-		return categoriaService.findAll();
+		return null; //categoriaService.findAll();
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
