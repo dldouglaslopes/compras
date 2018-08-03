@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | General Form Elements</title>
+  <title>Exibição de Produtos</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -31,16 +31,20 @@
 
 <body>
 <div class="callout callout-info">
-<h4>Clientes</h4>
-<div th:each="cliente,indexCliente : ${clientes}">
-	<td th:text="${indexCliente.count}"> </td>
+<h4>Produtos</h4>
+<div th:each="produto,indexProduto : ${produtos}">
+	<td th:text="${indexProduto.count}"> </td>
    	
    	<td>Nome: </td>
-   	<span th:text="${cliente.nome}"/>
+   	<span th:text="${produto.nome}"/>
    	<br>
    	
-   	<td> &nbsp&nbsp Email: </td>
-   	<span th:text="${cliente.email}"/>
+   	<td> &nbsp&nbsp Preço: </td>
+   	<span th:text="${produto.preco}"/>
+   	<br>
+   	
+   	<td> &nbsp&nbsp Categoria: </td>
+   	<span th:text="${produto.categoria.nome}"/>
    	<br>
    	<br>	
 </div> 
