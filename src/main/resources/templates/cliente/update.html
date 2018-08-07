@@ -1,62 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Atualização de Clientes</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <!-- Bootstrap 3.3.7 -->
-  <link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap.min.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="../../bower_components/font-awesome/css/font-awesome.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="../../bower_components/Ionicons/css/ionicons.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="../../dist/css/AdminLTE.min.css">
-  <!-- AdminLTE Skins. Choose a skin from the css/skins
-       folder instead of downloading all of them to reduce the load. -->
-  <link rel="stylesheet" href="../../dist/css/skins/_all-skins.min.css">
-
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
-
-  <!-- Google Font -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+	<meta charset="UTF-8" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width" />
+	<title>Atualização de Clientes</title>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"></link>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
-<div class="col-md-6">
-<div class="box box-info">
-  <div class="box-header with-border">
-    <h3 class="box-title">Atualizar cliente</h3>
-  </div>
-  <!-- /.box-header -->
-  <!-- form start -->
-  <form class="form-horizontal">
-    <div class="box-body">
-      <div class="form-group">
-        <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
-
-        <div class="col-sm-10">
-          <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
-
-        <div class="col-sm-10">
-          <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
-        </div>
-      </div>
-    </div>
-    <!-- /.box-body -->
-    <div class="box-footer">
-      <button type="submit" class="btn btn-default">Cancel</button>
-      <button type="submit" class="btn btn-info pull-right">OK</button>
-    </div>
-    <!-- /.box-footer -->
-  </form>
-</div>
+<body>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<strong>Atualização de Clientes</strong>
+		</div>
+		<div class="panel-body">
+			<form class="form-horizontal" th:object="${post}" th:action="@{/save}" method="POST" style="margin: 10px">
+				<div class="form-group">
+ 					<fieldset>
+						<div class="form-group row">
+							<div class="alert alert-danger" th:if="${#fields.hasAnyErrors()}">
+								<div th:each="detailedError : ${#fields.detailedErrors()}">
+									<span th:text="${detailedError.message}"></span>
+								</div>
+							</div>
+						</div> 					
+						<div class="form-group row">
+						    <div class="col-md-1">
+						        <input type="text" class="form-control input-sm" id="id" th:field="*{id}" readOnly="readonly"/>
+						    </div>
+						 </div>
+						<div class="form-group row">                                                          
+							<div class="col-md-4" th:classappend="${#fields.hasErrors('autor')}? 'has-error'">
+							    <label>Autor</label>
+							    <input type="text" class="form-control input-sm" th:field="*{autor}" autofocus="autofocus" placeholder="Informe o autor" maxlength="50"/>
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-md-4" th:classappend="${#fields.hasErrors('titulo')}? 'has-error'">
+								<label>T&iacute;tulo</label> 
+								<input type="text" class="form-control input-sm" th:field="*{titulo}" maxlength="150" placeholder="Informe o título"/>
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-md-2" th:classappend="${#fields.hasErrors('data')}? 'has-error'">
+								<label>Data</label> 
+								<input type="date" class="form-control input-sm" th:field="*{data}"/>
+							</div>
+						</div>						
+						<div class="form-group row">
+							<div class="col-md-4" th:classappend="${#fields.hasErrors('texto')}? 'has-error'">
+								<label>Texto</label>
+								<textarea class="form-control input-sm" th:field="*{texto}" cols="5" rows="5" placeholder="Informe o texto"></textarea>
+							</div>
+						</div>						
+					</fieldset>
+				</div>
+				<div class="form-group row">
+					<button type="submit" class="btn btn-sm btn-primary">Salvar</button>
+					<a th:href="@{/}" class="btn btn-sm btn-default">Cancelar</a>
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

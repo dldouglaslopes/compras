@@ -1,13 +1,17 @@
 package com.douglas.compras.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import com.douglas.compras.domain.Cliente;
+import com.douglas.compras.dto.ClienteDTO;
 import com.douglas.compras.service.ClienteService;
 
 @Controller
@@ -17,60 +21,42 @@ public class ClienteController {
 	@Autowired
 	private ClienteService clienteService;
 
-	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String list(Model model) {		
 		model.addAttribute("clientes", clienteService.findAll());
 		
-		return "cliente/clientes";
-	}
-	
-	@RequestMapping(value = "/find/{id}", method = RequestMethod.GET)
-	public String find(@PathVariable Integer id, Model model) {
-		Cliente cliente = clienteService.find(id);
-		
-		if (cliente == null) {
-			model.addAttribute("cliente", new Cliente());
-			
-			return "findCliente";
-		}
-		
-		model.addAttribute("cliente", cliente);
-		
-		return "cliente/findCliente";
+		return "cliente/showAll";
 	}
 	
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-	public String delete(@PathVariable Integer id, Model model) {
-		Cliente cliente = clienteService.find(id);
-		
-		if (cliente == null) {
-			model.addAttribute("deleteCliente", "Não existe");	
-			
-			return "cliente/deleteCliente";
-		}
-		
+	public String delete(@PathVariable Integer id, Model model) {		
 		clienteService.delete(id);
 		
-		model.addAttribute("deleteCliente", "Deletado");
+		model.addAttribute("clientes", clienteService.findAll());
 		
-		return "cliente/deleteCliente";
+		return "cliente/showAll";
 	}
 	
-//	@RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
-//	public ResponseEntity<Cliente> update(@PathVariable Integer id, 
-//											@Valid @RequestBody ClienteDTO clienteDTO) {
-//		
+	@RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
+	public String update(@PathVariable Integer id, 
+											@Valid @RequestBody ClienteDTO clienteDTO) {
+		
 //		Cliente cliente = new Cliente(clienteDTO.getId(), 
 //										clienteDTO.getNome(), 
 //										clienteDTO.getEmail());
 //		cliente.setId(id);
 //		cliente = clienteService.update(cliente);
-//		
-//		return ResponseEntity.noContent().build();
-//	}
+		
+		return "cliente/update";
+	}
 	
-//	@RequestMapping(method = RequestMethod.POST)
-//	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteDTO clienteDTO) {		
+	@RequestMapping(value = "/insert/", method = RequestMethod.GET)
+	public String insert() {
+		return "cliente/register";
+	}
+	
+	@RequestMapping(value = "/insert/save/", method = RequestMethod.GET)
+	public String save(Model model) {	//, @RequestParam("clienteRegister") ClienteDTO clienteDTO	
 //		Cliente cliente = new Cliente(null, 
 //										clienteDTO.getNome(), 
 //										clienteDTO.getEmail());
@@ -79,7 +65,10 @@ public class ClienteController {
 //		
 //		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 //		.path("/{id}").buildAndExpand(cliente.getId()).toUri();
-//		
-//		return ResponseEntity.created(uri).build();
-//	}
+		
+		//return ResponseEntity.created(uri).build();
+		model.addAttribute("clientes", clienteService.findAll());
+		
+		return "cliente/showAll";
+	}
 }
