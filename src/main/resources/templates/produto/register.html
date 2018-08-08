@@ -4,17 +4,17 @@
 	<meta charset="UTF-8" />
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="viewport" content="width=device-width" />
-	<title>Cadastro de Clientes</title>
+	<title>Cadastro de Produtos</title>
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"></link>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<strong>Cadastro de Clientes</strong>
+			<strong>Cadastro de Produtos</strong>
 		</div>
 		<div class="panel-body">
-			<form class="form-horizontal" th:object="${clienteRegister}" th:action="@{/clientes/save}" method="POST" style="margin: 10px">
+			<form class="form-horizontal" th:object="${produtoRegister}" th:action="@{/produtos/save}" method="POST" style="margin: 10px">
 								<div class="form-group">
  					<fieldset>		
  						<div class="form-group row">
@@ -30,15 +30,21 @@
 						</div>	
 						<div class="form-group row">                                                          
 							<div class="col-md-4">
-							    <label>E-mail</label>
-							    <input type="email" id="input-email" th:field="*{email}" class="form-control input-sm" autofocus="autofocus" placeholder="Informe o e-mail" maxlength="50"/>
+							    <label>Preco</label>
+							    <input type="text" id="input-preco" th:field="*{preco}" class="form-control input-sm" autofocus="autofocus" placeholder="Informe o preco" maxlength="50"/>
+							</div>
+						</div>	
+						<div class="form-group row">                                                          
+							<div class="col-md-4">
+							    <label>Categoria</label>
+							    <input type="number" id="input-categoria" th:field="*{categoria}" class="form-control input-sm" autofocus="autofocus" placeholder="Informe a categoria" maxlength="50"/>
 							</div>
 						</div>									
 					</fieldset>
 				</div>
 				<div class="form-group row">
 					<button class="btn btn-sm btn-primary">Salvar</button>
-					<a th:href="@{/clientes/}" class="btn btn-sm btn-default">Cancelar</a>
+					<a th:href="@{/produtos/}" class="btn btn-sm btn-default">Cancelar</a>
 				</div>
 			</form>
 		</div>
