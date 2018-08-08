@@ -31,7 +31,7 @@
 							<td th:text="${cliente.email}"></td>
 							<td>
 								<div class="btn-group pull-right">
-							   		<a class="btn btn-sm btn-primary" th:href="@{update/{id}(id=${cliente.id})}" >Editar</a>
+							   		<a class="btn btn-sm btn-primary" th:href="@{edit/{id}(id=${cliente.id})}" >Editar</a>
 							   		<a class="delete btn btn-sm btn-danger" th:href="@{delete/{id}(id=${cliente.id})}">Excluir</a>
 							   </div>
 							</td>

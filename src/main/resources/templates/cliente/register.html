@@ -14,7 +14,7 @@
 			<strong>Cadastro de Clientes</strong>
 		</div>
 		<div class="panel-body">
-			<form class="form-horizontal" th:object="${clienteRegister}" th:action="@{/insert/save/}" method="POST" style="margin: 10px">
+			<form class="form-horizontal" th:object="${clienteRegister}" th:action="@{/clientes/save}" method="POST" style="margin: 10px">
 								<div class="form-group">
  					<fieldset>		
  						<div class="form-group row">
@@ -37,7 +37,7 @@
 					</fieldset>
 				</div>
 				<div class="form-group row">
-					<a th:href="@{/clientes/insert/save/}" class="btn btn-sm btn-primary">Salvar</a>
+					<button class="btn btn-sm btn-primary">Salvar</button>
 					<a th:href="@{/clientes/}" class="btn btn-sm btn-default">Cancelar</a>
 				</div>
 			</form>
