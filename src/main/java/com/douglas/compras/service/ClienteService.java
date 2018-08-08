@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.douglas.compras.domain.Cliente;
+import com.douglas.compras.domain.Produto;
 import com.douglas.compras.repository.ClienteRepositorio;
 
 @Service
@@ -50,5 +51,12 @@ public class ClienteService {
 		cliente = clienteRepositorio.save(cliente);		
 		
 		return cliente;
+	}
+	
+	public List<Produto> products(Integer id) {
+		Cliente cliente = find(id);
+		List<Produto> produtos = cliente.getProdutos();	
+		
+		return produtos;
 	}
 }

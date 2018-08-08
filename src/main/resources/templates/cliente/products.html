@@ -18,31 +18,25 @@
 				<table class="table table-sm table-striped table-hover table-bordered">
 					<thead>
 						<tr>
-							<th>ID</th>
-							<th>Nome</th>
-							<th>Email</th>
 							<th></th>
+							<th>Nome</th>
+							<th>Preço</th>
+							<th>Categoria</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr th:each="cliente,indexCliente : ${clientes}">
-							<td th:text="${cliente.id}"></td>
-							<td th:text="${cliente.nome}"></td>
-							<td th:text="${cliente.email}"></td>
-							<td>
-								<div class="btn-group pull-right">
-									<a class="btn btn-sm btn btn-info" th:href="@{products/{id}(id=${cliente.id})}">Histórico</a>
-							   		<a class="btn btn-sm btn-primary" th:href="@{edit/{id}(id=${cliente.id})}" >Editar</a>
-							   		<a class="delete btn btn-sm btn-danger" th:href="@{delete/{id}(id=${cliente.id})}">Excluir</a>
-							   </div>
-							</td>
+						<tr th:each="produto,indexProdutos : ${produtos}">
+							<td th:text="${indexProdutos.count}"></td>
+							<td th:text="${produto.nome}"></td>
+							<td th:text="${produto.preco}"></td>
+							<td th:text="${produto.categoria.nome}"></td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
 		</div>
 		<div class="panel-footer">
-			<a class="btn btn-sm btn-success" th:href="@{insert/}" >Adicionar</a>
+			<a th:href="@{/clientes/}" class="btn btn-sm btn-default">Voltar</a>
 		</div>
 	</div>
 </body>

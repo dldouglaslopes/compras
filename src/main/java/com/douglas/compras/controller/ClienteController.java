@@ -64,13 +64,12 @@ public class ClienteController {
 	
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public ModelAndView update(Model model, 
-								//PathVariable Integer id,
 								@ModelAttribute @Valid ClienteDTO clienteUpdate) {
 		
 		Cliente cliente = new Cliente(clienteUpdate.getId(), 
 										clienteUpdate.getNome(), 
 										clienteUpdate.getEmail());
-		//cliente.setId(id);
+		
 		cliente = clienteService.update(cliente);
 		
 		model.addAttribute("clientes", clienteService.findAll());
@@ -95,5 +94,12 @@ public class ClienteController {
 		model.addAttribute("clientes", clienteService.findAll());
 		
 		return new ModelAndView("cliente/showAll");
+	}
+	
+	@RequestMapping(value = "/products/{id}", method = RequestMethod.GET)
+	public  ModelAndView listProducts(Model model, @PathVariable Integer id) {		
+		model.addAttribute("produtos", clienteService.products(id));
+		
+		return new ModelAndView("cliente/products");
 	}
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.douglas.compras.domain.Categoria;
+import com.douglas.compras.domain.Produto;
 import com.douglas.compras.repository.CategoriaRepositorio;
 
 @Service
@@ -51,4 +52,11 @@ public class CategoriaService {
 		
 		return categoria;
 	} 
+	
+	public List<Produto> products(Integer id) {
+		Categoria categoria = find(id);
+		List<Produto> produtos = categoria.getProdutos();	
+		
+		return produtos;
+	}
 }
