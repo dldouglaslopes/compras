@@ -30,19 +30,19 @@ public class ProdutoController {
 	private CategoriaService categoriaService;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String list(Model model) {		
+	public ModelAndView list(Model model) {		
 		model.addAttribute("produtos", produtoService.findAll());
 		
-		return "produto/showAll";
+		return new ModelAndView("produto/showAll");
 	}
 	
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-	public String delete(@PathVariable Integer id, Model model) {		
+	public ModelAndView delete(@PathVariable Integer id, Model model) {		
 		produtoService.delete(id);
 		
 		model.addAttribute("produtos", produtoService.findAll());
 		
-		return "produto/showAll";
+		return new ModelAndView("produto/showAll");
 	}
 	
 	@RequestMapping(value = "/insert", method = RequestMethod.GET)

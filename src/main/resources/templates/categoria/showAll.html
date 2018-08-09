@@ -29,9 +29,9 @@
 							<td th:text="${categoria.nome}"></td>
 							<td>
 								<div class="btn-group pull-right">
-									<a class="btn btn-sm btn btn-info" th:href="@{products/{id}(id=${categoria.id})}">Produtos</a>
-							   		<a class="btn btn-sm btn-primary" th:href="@{edit/{id}(id=${categoria.id})}" >Editar</a>
-							   		<a class="delete btn btn-sm btn-danger" th:href="@{delete/{id}(id=${categoria.id})}">Excluir</a>
+									<a class="btn btn-sm btn btn-info" th:href="@{/categorias/products/{id}(id=${categoria.id})}">Produtos</a>
+							   		<a class="btn btn-sm btn-primary" th:href="@{/categorias/edit/{id}(id=${categoria.id})}" >Editar</a>
+							   		<a class="delete btn btn-sm btn-danger" th:href="@{/categorias/delete/{id}(id=${categoria.id})}">Excluir</a>
 							   </div>
 							</td>
 						</tr>
