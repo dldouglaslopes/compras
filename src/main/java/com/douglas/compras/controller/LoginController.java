@@ -18,24 +18,23 @@ public class LoginController {
 	@Autowired
 	private CategoriaService categoriaService; 
 	
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView index(Model model) {
-		return new ModelAndView("index");
-	}
-	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login(Model model) {
 		return new ModelAndView("login");
 	}
 
-	@RequestMapping(value = "/produtos", method = RequestMethod.GET)
-	public ModelAndView listProdutos(Model model) {
-		return new ModelAndView("init/categorias");
-	}
-	
-	@RequestMapping(value = "/categorias", method = RequestMethod.GET)
-	public ModelAndView listCategorias(Model model) {
-		return new ModelAndView("init/produtos");
-	}
+//	@RequestMapping(value = "/produtos", method = RequestMethod.GET)
+//	public ModelAndView listProdutos(Model model) {
+//		return new ModelAndView("init/categorias");
+//	}
+//	
+//	@RequestMapping(value = "/categorias", method = RequestMethod.GET)
+//	public ModelAndView listCategorias(Model model) {
+//		return new ModelAndView("init/produtos");
+//	}
 }
 
+//@RequestMapping(value = "/", method = RequestMethod.GET)
+//public ModelAndView index(Model model) {
+//	return new ModelAndView("index");
+//}
