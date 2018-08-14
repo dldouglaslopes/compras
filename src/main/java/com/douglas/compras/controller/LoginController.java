@@ -22,7 +22,11 @@ public class LoginController {
 	public ModelAndView login(Model model) {
 		return new ModelAndView("login");
 	}
-
+//	@RequestMapping(value = "/", method = RequestMethod.GET)
+//	public ModelAndView home(Model model) {
+//		return new ModelAndView("index");
+//	}
+//	
 //	@RequestMapping(value = "/produtos", method = RequestMethod.GET)
 //	public ModelAndView listProdutos(Model model) {
 //		return new ModelAndView("init/categorias");
