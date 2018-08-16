@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -25,6 +26,9 @@ public class ClienteController {
 	
 	@Autowired
 	private ClienteService clienteService;
+	
+	@Autowired
+	private BCryptPasswordEncoder bEncoder;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String list(Model model) {		
@@ -68,7 +72,8 @@ public class ClienteController {
 		
 		Cliente cliente = new Cliente(clienteUpdate.getId(), 
 										clienteUpdate.getNome(), 
-										clienteUpdate.getEmail());
+										clienteUpdate.getEmail(),
+										bEncoder.encode(clienteUpdate.getSenha()));
 		
 		cliente = clienteService.update(cliente);
 		
@@ -83,7 +88,8 @@ public class ClienteController {
 		
 		Cliente cliente = new Cliente(null, 
 									clienteRegister.getNome(), 
-									clienteRegister.getEmail());
+									clienteRegister.getEmail(),
+									bEncoder.encode(clienteRegister.getSenha()));
 		
 		cliente = clienteService.insert(cliente);
 		

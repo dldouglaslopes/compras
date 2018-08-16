@@ -6,23 +6,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.douglas.compras.domain.Categoria;
 import com.douglas.compras.domain.Cliente;
 import com.douglas.compras.domain.Produto;
+import com.douglas.compras.domain.enums.Perfil;
 import com.douglas.compras.repository.CategoriaRepositorio;
 import com.douglas.compras.repository.ClienteRepositorio;
 import com.douglas.compras.repository.ProdutoRepositorio;
 
 @SpringBootApplication
 public class ComprasApplication implements CommandLineRunner{
-	
+
 	@Autowired
 	private ClienteRepositorio clienteRepositorio;
 	@Autowired
 	private CategoriaRepositorio categoriaRepositorio;
 	@Autowired
 	private ProdutoRepositorio produtoRepositorio;
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder ;
 
 	public static void main(String[] args) {
 		SpringApplication.run(ComprasApplication.class, args);
@@ -41,8 +45,9 @@ public class ComprasApplication implements CommandLineRunner{
 		
 		produtoRepositorio.saveAll(Arrays.asList(produto1, produto2, produto3));
 		
-		Cliente cliente1 = new Cliente(null, "Maria", "maria@email.com");
-		Cliente cliente2 = new Cliente(null, "João", "joao@email.com");
+		Cliente cliente1 = new Cliente(null, "Maria", "maria@email.com", bCryptPasswordEncoder.encode("123"));
+		Cliente cliente2 = new Cliente(null, "João", "joao@email.com", bCryptPasswordEncoder.encode("234"));
+		cliente2.addPerfil(Perfil.ADMIN);
 		
 		cliente1.getProdutos().add(produto1);
 		cliente2.getProdutos().add(produto2);
