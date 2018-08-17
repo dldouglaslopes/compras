@@ -10,9 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.douglas.compras.domain.Cliente;
 import com.douglas.compras.domain.Produto;
-import com.douglas.compras.domain.enums.Perfil;
 import com.douglas.compras.repository.ClienteRepositorio;
-import com.douglas.compras.security.UserSS;
 
 @Service
 public class ClienteService {
@@ -26,13 +24,7 @@ public class ClienteService {
 		return clientes;
 	}
 	
-	public Cliente find(Integer id) {
-		UserSS user = UserService.authenticated();
-		
-		if (user == null || user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
-			return null;
-		}
-		
+	public Cliente find(Integer id) {		
 		Optional<Cliente> cliente = clienteRepositorio.findById(id);
 		
 		return cliente.orElse(null);
