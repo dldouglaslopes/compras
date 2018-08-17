@@ -1,26 +1,28 @@
 package com.douglas.compras.controller;
 
 import java.net.URI;
+import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.douglas.compras.domain.Cliente;
+import com.douglas.compras.domain.Produto;
 import com.douglas.compras.dto.ClienteDTO;
 import com.douglas.compras.service.ClienteService;
 
-@Controller
+@RestController
 @RequestMapping(value="/clientes")
 public class ClienteController {
 	
@@ -31,19 +33,24 @@ public class ClienteController {
 	private BCryptPasswordEncoder bEncoder;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String list(Model model) {		
-		model.addAttribute("clientes", clienteService.findAll());
+	public ResponseEntity<List<Cliente>> findAll() {		
+		List<Cliente> clients = clienteService.findAll();
 		
-		return "cliente/showAll";
+		return ResponseEntity.ok().body(clients);
+	}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public ResponseEntity<Cliente> findOne(@PathVariable Integer id) {		
+		Cliente client = clienteService.find(id);
+		
+		return ResponseEntity.ok().body(client);
 	}
 	
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-	public String delete(@PathVariable Integer id, Model model) {		
+	public ResponseEntity<Cliente> delete(@PathVariable Integer id) {		
 		clienteService.delete(id);
 		
-		model.addAttribute("clientes", clienteService.findAll());
-		
-		return "cliente/showAll";
+		return ResponseEntity.noContent().build();
 	}
 	
 	@RequestMapping(value = "/insert", method = RequestMethod.GET)
@@ -83,7 +90,7 @@ public class ClienteController {
 	}
 	
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public ModelAndView save(Model model, 
+	public ResponseEntity<Void> save(Model model, 
 							@ModelAttribute @Valid ClienteDTO clienteRegister) {
 		
 		Cliente cliente = new Cliente(null, 
@@ -94,18 +101,15 @@ public class ClienteController {
 		cliente = clienteService.insert(cliente);
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-		.path("/{id}").buildAndExpand(cliente.getId()).toUri();		
-		ResponseEntity.created(uri).build();
+		.path("/{id}").buildAndExpand(cliente.getId()).toUri();	
 		
-		model.addAttribute("clientes", clienteService.findAll());
-		
-		return new ModelAndView("cliente/showAll");
+		return ResponseEntity.created(uri).build();
 	}
 	
 	@RequestMapping(value = "/products/{id}", method = RequestMethod.GET)
-	public  ModelAndView listProducts(Model model, @PathVariable Integer id) {		
-		model.addAttribute("produtos", clienteService.products(id));
+	public ResponseEntity<List<Produto>> listProducts(@PathVariable Integer id) {		
+		List<Produto> products = clienteService.products(id);
 		
-		return new ModelAndView("cliente/products");
+		return ResponseEntity.ok().body(products);
 	}
 }

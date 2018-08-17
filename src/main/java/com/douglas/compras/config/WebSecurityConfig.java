@@ -56,8 +56,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers(PUBLIC_MATCHERS).permitAll()
 			.anyRequest().authenticated();
 		
-		http.addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtUtil));
-		http.addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
+		//http.addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtUtil));
+		//http.addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
 
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
