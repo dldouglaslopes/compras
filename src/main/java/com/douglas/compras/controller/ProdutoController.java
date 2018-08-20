@@ -1,18 +1,17 @@
 package com.douglas.compras.controller;
 
 import java.net.URI;
+import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.douglas.compras.domain.Categoria;
@@ -22,92 +21,73 @@ import com.douglas.compras.service.CategoriaService;
 import com.douglas.compras.service.ProdutoService;
 
 @RestController
-@RequestMapping(value="/produtos")
+@RequestMapping(value="/products")
 public class ProdutoController {
 	@Autowired
-	private ProdutoService produtoService;
+	private ProdutoService productService;
 	@Autowired
-	private CategoriaService categoriaService;
+	private CategoriaService categoryService;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView list(Model model) {		
-		model.addAttribute("produtos", produtoService.findAll());
+	public ResponseEntity<List<Produto>> findAll() {		
+		List<Produto> products = productService.findAll();
 		
-		return new ModelAndView("produto/showAll");
+		return ResponseEntity.ok().body(products);
 	}
 	
-	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-	public ModelAndView delete(@PathVariable Integer id, Model model) {		
-		produtoService.delete(id);
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public ResponseEntity<Produto> findOne(@PathVariable Integer id) {		
+		Produto product = productService.find(id);
 		
-		model.addAttribute("produtos", produtoService.findAll());
-		
-		return new ModelAndView("produto/showAll");
+		return ResponseEntity.ok().body(product);
 	}
 	
-	@RequestMapping(value = "/insert", method = RequestMethod.GET)
-	public ModelAndView insert(Model model) { 
-		model.addAttribute("produtoRegister", new ProdutoDTO());
- 
-	    return new ModelAndView("produto/register");
-	}
-	
-	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
-	public ModelAndView edit(Model model, @PathVariable Integer id) {		
-		Produto produto = produtoService.find(id);
-		ProdutoDTO produtoDTO = new ProdutoDTO();
-		produtoDTO.setId(produto.getId());
-		produtoDTO.setNome(produto.getNome());
-		produtoDTO.setPreco(produto.getPreco());
-		produtoDTO.setCategoria(produto.getCategoria().getId());
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<Void> insert(@RequestBody @Valid ProdutoDTO productRegister) {
 		
-		model.addAttribute("produtoUpdate", produtoDTO);
+		Categoria category = categoryService.find(productRegister.getCategoria());
 		
-		return new ModelAndView("produto/update");
-	}
-	
-	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public ModelAndView update(Model model, 
-								@ModelAttribute @Valid ProdutoDTO produtoUpdate) {
-		
-		Categoria categoria = categoriaService.find(produtoUpdate.getCategoria());
-		
-		if (categoria != null) {
-			Produto produto = new Produto(produtoUpdate.getId(), 
-											produtoUpdate.getNome(), 
-											produtoUpdate.getPreco(),
-											categoria);
-			
-			produto = produtoService.update(produto);
-		}	
-		
-		model.addAttribute("produtos", produtoService.findAll());
-		
-		return new ModelAndView("produto/showAll");
-	}
-	
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public ModelAndView save(Model model, 
-							@ModelAttribute @Valid ProdutoDTO produtoRegister) {
-		
-		Categoria categoria = categoriaService.find(produtoRegister.getCategoria());
-		
-		if (categoria != null) {
-			Produto produto = new Produto(null, 
-										produtoRegister.getNome(), 
-										produtoRegister.getPreco(),
-										categoria);
+		if (category != null) {
+			Produto product = new Produto(null, 
+										productRegister.getNome(), 
+										productRegister.getPreco(),
+										category);
 
-			produto = produtoService.insert(produto);
+			product = productService.insert(product);
 			
 			URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-			.path("/{id}").buildAndExpand(produto.getId()).toUri();		
+			.path("/{id}").buildAndExpand(product.getId()).toUri();		
 			ResponseEntity.created(uri).build();
+		
+			return ResponseEntity.created(uri).build();
 		}	
-		
-		model.addAttribute("produtos", produtoService.findAll());
-		
-		return new ModelAndView("produto/showAll");
+			
+		return ResponseEntity.noContent().build();
 	}
 	
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> update(@PathVariable Integer id,
+										@RequestBody @Valid ProdutoDTO productUpdate) {
+		
+		Categoria category = categoryService.find(productUpdate.getCategoria());
+		
+		if (category != null) {
+			Produto produto = new Produto(productUpdate.getId(), 
+											productUpdate.getNome(), 
+											productUpdate.getPreco(),
+											category);
+			
+			produto = productService.update(produto);
+		}	
+		
+		return ResponseEntity.noContent().build();
+	}
+	
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Produto> delete(@PathVariable Integer id) {		
+		productService.delete(id);
+		
+		return ResponseEntity.noContent().build();
+	}	
 }

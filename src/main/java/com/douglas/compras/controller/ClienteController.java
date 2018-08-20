@@ -7,14 +7,11 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.douglas.compras.domain.Cliente;
@@ -23,82 +20,39 @@ import com.douglas.compras.dto.ClienteDTO;
 import com.douglas.compras.service.ClienteService;
 
 @RestController
-@RequestMapping(value="/clientes")
+@RequestMapping(value="/clients")
 public class ClienteController {
 	
 	@Autowired
-	private ClienteService clienteService;
+	private ClienteService clientService;
 	
-	@Autowired
-	private BCryptPasswordEncoder bEncoder;
+//	@Autowired
+//	private BCryptPasswordEncoder bEncoder;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ResponseEntity<List<Cliente>> findAll() {		
-		List<Cliente> clients = clienteService.findAll();
+		List<Cliente> clients = clientService.findAll();
 		
 		return ResponseEntity.ok().body(clients);
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Cliente> findOne(@PathVariable Integer id) {		
-		Cliente client = clienteService.find(id);
+		Cliente client = clientService.find(id);
 		
 		return ResponseEntity.ok().body(client);
 	}
 	
-	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Cliente> delete(@PathVariable Integer id) {		
-		clienteService.delete(id);
-		
-		return ResponseEntity.noContent().build();
-	}
-	
-	@RequestMapping(value = "/insert", method = RequestMethod.GET)
-	public ModelAndView insert(Model model) { 
-		model.addAttribute("clienteRegister", new ClienteDTO());
- 
-	    return new ModelAndView("cliente/register");
-	}
-	
-	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
-	public ModelAndView edit(Model model, @PathVariable Integer id) {		
-		Cliente cliente = clienteService.find(id);
-		ClienteDTO clienteDTO = new ClienteDTO();
-		clienteDTO.setId(cliente.getId());
-		clienteDTO.setNome(cliente.getNome());
-		clienteDTO.setEmail(cliente.getEmail());
-		
-		model.addAttribute("clienteUpdate", clienteDTO);
-		
-		return new ModelAndView("cliente/update");
-	}
-	
-	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public ModelAndView update(Model model, 
-								@ModelAttribute @Valid ClienteDTO clienteUpdate) {
-		
-		Cliente cliente = new Cliente(clienteUpdate.getId(), 
-										clienteUpdate.getNome(), 
-										clienteUpdate.getEmail(),
-										bEncoder.encode(clienteUpdate.getSenha()));
-		
-		cliente = clienteService.update(cliente);
-		
-		model.addAttribute("clientes", clienteService.findAll());
-	
-		return new ModelAndView("cliente/showAll");
-	}
-	
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public ResponseEntity<Void> save(Model model, 
-							@ModelAttribute @Valid ClienteDTO clienteRegister) {
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<Void> insert(@RequestBody @Valid ClienteDTO clientRegister) {
 		
 		Cliente cliente = new Cliente(null, 
-									clienteRegister.getNome(), 
-									clienteRegister.getEmail(),
-									bEncoder.encode(clienteRegister.getSenha()));
+									clientRegister.getNome(), 
+									clientRegister.getEmail(),
+									//bEncoder.encode(
+									clientRegister.getSenha());
 		
-		cliente = clienteService.insert(cliente);
+		cliente = clientService.insert(cliente);
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 		.path("/{id}").buildAndExpand(cliente.getId()).toUri();	
@@ -106,9 +60,31 @@ public class ClienteController {
 		return ResponseEntity.created(uri).build();
 	}
 	
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> update(@PathVariable Integer id, @RequestBody @Valid ClienteDTO clientUpdate) {
+		
+		Cliente cliente = new Cliente(clientUpdate.getId(), 
+										clientUpdate.getNome(), 
+										clientUpdate.getEmail(),
+										//bEncoder.encode(
+										clientUpdate.getSenha());
+		cliente.setId(id);
+		cliente = clientService.update(cliente);
+		
+		return ResponseEntity.noContent().build();
+	}
+	
+	//@PreAuthorize("hasAnyRole('ADMIN')")
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Cliente> delete(@PathVariable Integer id) {		
+		clientService.delete(id);
+		
+		return ResponseEntity.noContent().build();
+	}
+	
 	@RequestMapping(value = "/products/{id}", method = RequestMethod.GET)
-	public ResponseEntity<List<Produto>> listProducts(@PathVariable Integer id) {		
-		List<Produto> products = clienteService.products(id);
+	public ResponseEntity<List<Produto>> findProducts(@PathVariable Integer id) {		
+		List<Produto> products = clientService.products(id);
 		
 		return ResponseEntity.ok().body(products);
 	}

@@ -1,103 +1,85 @@
 package com.douglas.compras.controller;
 import java.net.URI;
+import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.douglas.compras.domain.Categoria;
+import com.douglas.compras.domain.Produto;
 import com.douglas.compras.service.CategoriaService;
 
 @RestController
-@RequestMapping(value="/categorias")
+@RequestMapping(value="/categories")
 public class CategoriaController {
 	
 	@Autowired
-	private CategoriaService categoriaService;
+	private CategoriaService categoryService;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String list(Model model) {		
-		model.addAttribute("categorias", categoriaService.findAll());
+	public ResponseEntity<List<Categoria>> findAll() {
+		List<Categoria> categories  = categoryService.findAll();
 		
-		return "categoria/showAll";
+		return ResponseEntity.ok().body(categories);
+	}	
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public ResponseEntity<Categoria> findOne(@PathVariable Integer id) {
+		Categoria category  = categoryService.find(id);
+		
+		return ResponseEntity.ok().body(category);
 	}
 	
-	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-	public String delete(@PathVariable Integer id, Model model) {	
-		Categoria categoria = categoriaService.find(id);
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<Void> insert(@RequestBody @Valid Categoria categoryRegister) {
 		
-		if (categoria.getProdutos().isEmpty()) {
-			categoriaService.delete(id);
-		}		
+		Categoria category = new Categoria(null, 
+									categoryRegister.getNome());
 		
-		model.addAttribute("categorias", categoriaService.findAll());
-		
-		return "categoria/showAll";
-	}
-	
-	@RequestMapping(value = "/insert", method = RequestMethod.GET)
-	public ModelAndView insert(Model model) { 
-		model.addAttribute("categoriaRegister", new Categoria());
- 
-	    return new ModelAndView("categoria/register");
-	}
-	
-	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
-	public ModelAndView edit(Model model, @PathVariable Integer id) {		
-		Categoria categoria = categoriaService.find(id);
-		categoria.setId(categoria.getId());
-		categoria.setNome(categoria.getNome());
-		
-		model.addAttribute("categoriaUpdate", categoria);
-		
-		return new ModelAndView("categoria/update");
-	}
-	
-	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public ModelAndView update(Model model, 
-								@ModelAttribute @Valid Categoria categoriaUpdate) {
-		
-		Categoria categoria = new Categoria(categoriaUpdate.getId(), 
-										categoriaUpdate.getNome());
-	
-		categoria = categoriaService.update(categoria);
-		
-		model.addAttribute("categorias", categoriaService.findAll());
-	
-		return new ModelAndView("categoria/showAll");
-	}
-	
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public ModelAndView save(Model model, 
-							@ModelAttribute @Valid Categoria categoriaRegister) {
-		
-		Categoria categoria = new Categoria(null, 
-									categoriaRegister.getNome());
-		
-		categoria = categoriaService.insert(categoria);
+		category = categoryService.insert(category);
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-		.path("/{id}").buildAndExpand(categoria.getId()).toUri();		
+		.path("/{id}").buildAndExpand(category.getId()).toUri();		
 		ResponseEntity.created(uri).build();
+				
+		return ResponseEntity.created(uri).build();
+	}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> update(@ModelAttribute @Valid Categoria categoryUpdate) {
 		
-		model.addAttribute("categorias", categoriaService.findAll());
+		Categoria categoria = new Categoria(categoryUpdate.getId(), 
+										categoryUpdate.getNome());
+	
+		categoria = categoryService.update(categoria);
+			
+		return ResponseEntity.noContent().build();
+	}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> delete(@PathVariable Integer id) {	
+		Categoria category = categoryService.find(id);
 		
-		return new ModelAndView("categoria/showAll");
+		if (category.getProdutos().isEmpty()) {
+			categoryService.delete(id);
+		}		
+		
+		return ResponseEntity.noContent().build();
 	}
 	
 	@RequestMapping(value = "/products/{id}", method = RequestMethod.GET)
-	public  ModelAndView listProducts(Model model, @PathVariable Integer id) {		
-		model.addAttribute("produtos", categoriaService.products(id));
+	public  ResponseEntity<List<Produto>> findProducts(@PathVariable Integer id) {		
+		List<Produto> products = categoryService.products(id);
 		
-		return new ModelAndView("categoria/products");
+		return ResponseEntity.ok().body(products);
 	}
 }
